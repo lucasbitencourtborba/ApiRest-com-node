@@ -7,6 +7,18 @@ class LivroController {
         })
     }
 
+    static obterLivrosPorId = (req, res) => {
+        const id = req.params.id
+
+        livros.findById(id, (err, livros) =>{
+            if(err) {
+                res.status(400).send({message: `${err.message} - Impossível encontrar ID espcificado`})
+            } else {
+                res.status(200).send(livros)
+            }
+        })
+    }
+
     static adicionarLivro = (req, res) => {
         let livro = new livros(req.body);
 
@@ -26,7 +38,19 @@ class LivroController {
             if(!err){
                 res.status(200).send({message: "Livro atualizado com sucesso"})
             } else {
-                res.status(500).send({message: err.message})
+                res.status(500).send({message: `${err.message} - Id não encontrado`})
+            }
+        })
+    }
+
+    static excluirLivro = (req, res) => {
+        const id = req.params.id
+
+        livros.findByIdAndDelete(id, (err) =>{
+            if(err){
+                res.status(400).send({message: `${err.message} - Id não encontrado`})
+            } else {
+                res.status(200).send({message: `Livro atualizado com sucesso`})
             }
         })
     }
