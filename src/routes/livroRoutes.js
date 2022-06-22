@@ -9,4 +9,5 @@ router
     .post("/livros", LivroController.adicionarLivro)
     .put("/livros/:id", LivroController.modificarLivro)
     .delete("/livros/:id", LivroController.excluirLivro)
-export default router;
+
+    export default router;
