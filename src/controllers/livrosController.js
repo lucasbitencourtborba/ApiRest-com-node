@@ -2,7 +2,9 @@ import livros from "../models/Livro.js";
 
 class LivroController {
     static obterLivros = (req, res) => {
-        livros.find((err, livros) => {
+        livros.find()
+            .populate('autor')
+            .exec((err, livros) => {
             res.status(200).json(livros)
         })
     }
