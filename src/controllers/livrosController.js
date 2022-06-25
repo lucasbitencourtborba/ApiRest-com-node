@@ -4,6 +4,7 @@ class LivroController {
     static obterLivros = (req, res) => {
         livros.find()
             .populate('autor')
+            .populate('editora')
             .exec((err, livros) => {
             res.status(200).json(livros)
         })
@@ -12,14 +13,18 @@ class LivroController {
     static obterLivrosPorId = (req, res) => {
         const id = req.params.id
 
-        livros.findById(id, (err, livros) =>{
+        livros.findById(id)
+            .populate('autor', 'nome')
+            .populate('editora')
+            .exec((err, livros) => {
             if(err) {
                 res.status(400).send({message: `${err.message} - Impossível encontrar ID espcificado`})
             } else {
                 res.status(200).send(livros)
             }
         })
-    }
+        }
+    
 
     static adicionarLivro = (req, res) => {
         let livro = new livros(req.body);
@@ -56,7 +61,15 @@ class LivroController {
             }
         })
     }
-}
 
+    static listarLivrosPorEditora = (req, res) => {
+        const editora = req.query.editora;
+        
+        livros.find({"editora": editora}, {}, (err, livros) => {
+            res.status(200).send(livros);
+        })
+    }
+
+}
 
 export default LivroController
